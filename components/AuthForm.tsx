@@ -123,6 +123,7 @@ const AuthForm = ({ type }: { type: fromtype }) => {
           )}
           <div className="body-2 flex justify-center">
 <p className="body-2 flex justify-center">
+    
     {type=="sign-in"?"You dont have an account!":"Already have an account?"}
 </p>
 <Link className="ml-1 font-medium text-brand" href={type=="sign-in"?"/sign-up":"/sign-in"}>
