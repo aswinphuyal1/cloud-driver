@@ -26,28 +26,26 @@ import { kMaxLength } from "buffer";
 // });
 
 type fromtype = "sign-in" | "sign-up";
-const authFormschema=(formType:fromtype)=>
-{
-    return  z.object({
-        email:z.string().email(),
-        fullname:formType==="sign-up"?z.string().min(2).max(50):z.string().optional()
-
-    })
-}
+const authFormschema = (formType: fromtype) => {
+  return z.object({
+    email: z.string().email(),
+    fullname:
+      formType === "sign-up"
+        ? z.string().min(2).max(50)
+        : z.string().optional(),
+  });
+};
 
 const AuthForm = ({ type }: { type: fromtype }) => {
-    const formSchema = authFormschema(type);
-    const [isloading, setisloading] = useState(false);
-    const [errormessage, seterrormessage] = useState("")
-
-
+  const formSchema = authFormschema(type);
+  const [isloading, setisloading] = useState(false);
+  const [errormessage, seterrormessage] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: "",
-      email:""
-      
+      email: "",
     },
   });
 
@@ -105,7 +103,11 @@ const AuthForm = ({ type }: { type: fromtype }) => {
             )}
           />
 
-          <Button className="form-submit-button " type="submit" disabled={isloading}>
+          <Button
+            className="form-submit-button "
+            type="submit"
+            disabled={isloading}
+          >
             {type === "sign-in" ? "SIGN IN " : "SIGN UP"}
 
             {isloading && (
@@ -118,18 +120,20 @@ const AuthForm = ({ type }: { type: fromtype }) => {
               />
             )}
           </Button>
-          {errormessage&&(
-            <p className="error-message">{errormessage}</p>
-          )}
+          {errormessage && <p className="error-message">{errormessage}</p>}
           <div className="body-2 flex justify-center">
-<p className="body-2 flex justify-center">
-    
-    {type=="sign-in"?"You dont have an account!":"Already have an account?"}
-</p>
-<Link className="ml-1 font-medium text-brand" href={type=="sign-in"?"/sign-up":"/sign-in"}>
-{''}
-{type==="sign-in"?"sign up":"sign in"}
-</Link>
+            <p className="body-2 flex justify-center">
+              {type == "sign-in"
+                ? "You dont have an account!"
+                : "Already have an account?"}
+            </p>
+            <Link
+              className="ml-1 font-medium text-brand"
+              href={type == "sign-in" ? "/sign-up" : "/sign-in"}
+            >
+              {""}
+              {type === "sign-in" ? "sign up" : "sign in"}
+            </Link>
           </div>
         </form>
       </Form>

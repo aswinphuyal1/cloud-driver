@@ -68,18 +68,11 @@ const config: Config = {
   				'2': 'hsl(var(--chart-2))',
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))',
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
   		fontFamily: {
-  			poppins: [
-  				'var(--font-poppins)'
-  			]
+  			poppins: ["var(--font-poppins)"]
   		},
   		boxShadow: {
   			'drop-1': '0px 10px 30px 0px rgba(66, 71, 97, 0.1)',
@@ -108,5 +101,4 @@ const config: Config = {
   },
   plugins: [require("tailwindcss-animate")],
 };
-
 export default config;
