@@ -8,6 +8,7 @@ const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createadminclient();
+  
   const result = await databases.listDocuments(
     appwriteconfig.databaseid,
     appwriteconfig.usercollectionid,
@@ -32,7 +33,8 @@ const sendemailopt = async ({ email }: { email: string }) => {
   }
 };
 
- export const createaccount = async ({
+ export 
+ const createaccount = async ({
   fullname,
   email,
 }: {

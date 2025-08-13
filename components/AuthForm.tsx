@@ -21,6 +21,7 @@ import { error } from "console";
 import Link from "next/link";
 import { kMaxLength } from "buffer";
 import { createaccount } from "@/lib/actions/user.actions";
+import Optmodel from "./Optmodel";
 
 // const formSchema = z.object({
 //   username: z.string().min(2).max(50),
@@ -41,12 +42,13 @@ const AuthForm = ({ type }: { type: fromtype }) => {
   const formSchema = authFormschema(type);
   const [isloading, setisloading] = useState(false);
   const [errormessage, seterrormessage] = useState("");
- const [accointid, setaccointid] = useState(null)
+ const [accountId, setaccountId] = useState(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: "",
       email: "",
+     
     },
   });
 
@@ -153,8 +155,11 @@ const AuthForm = ({ type }: { type: fromtype }) => {
           </div>
         </form>
       </Form>
-      {/* opt verification */}
+      {accountId && (
+        <Optmodel email={form.getValues("email")} accountId={accountId} />
+      )}
     </>
+  
   );
 };
 
