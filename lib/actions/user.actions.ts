@@ -1,9 +1,10 @@
 "use server";
 
 import { Account, ID, Query } from "node-appwrite";
-import { createadminclient } from "../appwrite";
+import { createadminclient, createsessionclient } from "../appwrite";
 import { appwriteconfig } from "../appwrite/config";
 import { cookies } from "next/headers";
+import { avatarPlaceholderUrl } from "@/constants";
 
 const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
@@ -57,8 +58,7 @@ export const createaccount = async ({
         {
           fullName,
           email,
-          avatar:
-            "https://png.pngtree.com/png-vector/20230304/ourmid/pngtree-male-avator-icon-vector-png-image_6631112.png",
+          avatar: avatarPlaceholderUrl,
           accountid: accountid,
         }
       );
@@ -104,4 +104,16 @@ export const verifysecret = async ({
   } catch (error: any) {
     console.log(error);
   }
+};
+
+export const getcurrentuser = async () => {
+  const { databases, account } = await createsessionclient();
+  const result = await account.get();
+  const user = await databases.listDocuments(
+    appwriteconfig.databaseid,
+    appwriteconfig.usercollectionid,
+    [Query.equal("accountid", [result.$id])]
+  );
+  if(user.total<=0) return null;
+  return parseStringify(user.documents[0])
 };
