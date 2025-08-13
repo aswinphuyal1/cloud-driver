@@ -22,6 +22,7 @@ import Link from "next/link";
 import { kMaxLength } from "buffer";
 import { createaccount } from "@/lib/actions/user.actions";
 import Optmodel from "./Optmodel";
+import { verifysecret } from "@/lib/actions/user.actions";
 
 // const formSchema = z.object({
 //   username: z.string().min(2).max(50),
@@ -31,7 +32,7 @@ type fromtype = "sign-in" | "sign-up";
 const authFormschema = (formType: fromtype) => {
   return z.object({
     email: z.string().email(),
-    fullname:
+    fullName:
       formType === "sign-up"
         ? z.string().min(2).max(50)
         : z.string().optional(),
@@ -42,33 +43,30 @@ const AuthForm = ({ type }: { type: fromtype }) => {
   const formSchema = authFormschema(type);
   const [isloading, setisloading] = useState(false);
   const [errormessage, seterrormessage] = useState("");
- const [accountId, setaccountId] = useState("");
+  const [accountid, setaccountid] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      fullname: "",
+      fullName: "",
       email: "",
-     
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-   setisloading(true)
-   seterrormessage(" ")
-  
-   try {
-     const user = await createaccount({
-       fullname: values.fullname || "",
-       email: values.email,
-     });
-     setaccountId(user.accountId);
-   } catch (error) {
-    seterrormessage("failed to create account")
-   }
- finally{
-  setisloading(false)
- }
-  
+    setisloading(true);
+    seterrormessage(" ");
+
+    try {
+      const user = await createaccount({
+        fullName: values.fullName || "",
+        email: values.email,
+      });
+      setaccountid(user.accountid);
+    } catch (error) {
+      seterrormessage("failed to create account");
+    } finally {
+      setisloading(false);
+    }
   };
 
   return (
@@ -81,7 +79,7 @@ const AuthForm = ({ type }: { type: fromtype }) => {
           {type === "sign-up" && (
             <FormField
               control={form.control}
-              name="fullname"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <div className="shad-form-item">
@@ -155,11 +153,10 @@ const AuthForm = ({ type }: { type: fromtype }) => {
           </div>
         </form>
       </Form>
-      {true && (
-        <Optmodel email={form.getValues("email")} accountId={accountId} />
+      {accountid && (
+        <Optmodel email={form.getValues("email")} accountid={accountid} />
       )}
     </>
-  
   );
 };
 

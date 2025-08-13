@@ -16,7 +16,7 @@ declare interface SearchParamProps {
 declare interface UploadFileProps {
   file: File;
   ownerId: string;
-  accountId: string;
+  accountid: string;
   path: string;
 }
 declare interface GetFilesProps {
@@ -44,13 +44,13 @@ declare interface DeleteFileProps {
 
 declare interface FileUploaderProps {
   ownerId: string;
-  accountId: string;
+  accountid: string;
   className?: string;
 }
 
 declare interface MobileNavigationProps {
   ownerId: string;
-  accountId: string;
+  accountid: string;
   fullName: string;
   avatar: string;
   email: string;

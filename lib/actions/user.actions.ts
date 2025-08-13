@@ -3,12 +3,13 @@
 import { Account, ID, Query } from "node-appwrite";
 import { createadminclient } from "../appwrite";
 import { appwriteconfig } from "../appwrite/config";
+import { cookies } from "next/headers";
 
 const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createadminclient();
-  
+
   const result = await databases.listDocuments(
     appwriteconfig.databaseid,
     appwriteconfig.usercollectionid,
@@ -23,7 +24,7 @@ const handleError = (error: unknown, message: string) => {
   throw new Error(message);
 };
 
-const sendemailopt = async ({ email }: { email: string }) => {
+export const sendemailotp = async ({ email }: { email: string }) => {
   try {
     const { account } = await createadminclient();
     const session = await account.createEmailToken(ID.unique(), email);
@@ -33,20 +34,19 @@ const sendemailopt = async ({ email }: { email: string }) => {
   }
 };
 
- export 
- const createaccount = async ({
-  fullname,
+export const createaccount = async ({
+  fullName,
   email,
 }: {
-  fullname: string;
+  fullName: string;
   email: string;
 }) => {
   try {
     const existinguser = await getUserByEmail(email);
 
-    const accountId = await sendemailopt({ email });
+    const accountid = await sendemailotp({ email });
 
-    if (!accountId) throw new Error("Failed to send an OTP and create user.");
+    if (!accountid) throw new Error("Failed to send an OTP and create user.");
 
     if (!existinguser) {
       const { databases } = await createadminclient();
@@ -55,17 +55,53 @@ const sendemailopt = async ({ email }: { email: string }) => {
         appwriteconfig.usercollectionid,
         ID.unique(),
         {
-          fullname,
+          fullName,
           email,
           avatar:
             "https://png.pngtree.com/png-vector/20230304/ourmid/pngtree-male-avator-icon-vector-png-image_6631112.png",
-          accountId: accountId,
+          accountid: accountid,
         }
       );
     }
 
-    return parseStringify({ value: accountId });
+    return parseStringify({ accountid: accountid });
   } catch (error) {
     handleError(error, "Failed to create account.");
+  }
+};
+
+export const verifysecret = async ({
+  accountid,
+  password,
+}: {
+  accountid: string;
+  password: string;
+}) => {
+  try {
+    const { account } = await createadminclient();
+    const session = await account.createSession(accountid, password);
+    (await cookies()).set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+
+      // Cookie Setting:
+
+      // Sets an HTTP-only cookie with the session secret
+
+      // Cookie attributes:
+
+      //     path=/: Available across entire site
+
+      //     httpOnly: Inaccessible to JavaScript (XSS protection)
+
+      //     sameSite=strict: CSRF protection
+
+      //     secure=true: Only sent over HTTPS
+    });
+    return parseStringify({ sessionId: session.$id });
+  } catch (error: any) {
+    console.log(error);
   }
 };

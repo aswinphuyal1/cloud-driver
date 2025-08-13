@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import { useState } from "react";
@@ -21,13 +22,17 @@ import {
 } from "@/components/ui/input-otp";
 import { Span } from "next/dist/trace";
 import { Button } from "./ui/button";
+import { verifysecret } from "@/lib/actions/user.actions";
+import { sendemailotp } from "@/lib/actions/user.actions";
+import { useRouter } from "next/navigation";
 const Optmodel = ({
-  accountId,
+  accountid,
   email,
 }: {
-  accountId: string;
+  accountid: string;
   email: string;
 }) => {
+  const router = useRouter();
   const [isOpen, setisOpen] = useState(true);
   const [password, setpassword] = useState("");
   const [isLoading, setisLoading] = useState(false);
@@ -37,6 +42,10 @@ const Optmodel = ({
     setisLoading(true);
     try {
       //CALL API TO VERIFY API
+      const sessionid = await verifysecret({ accountid, password });
+      if (sessionid) {
+        router.push("/");
+      }
     } catch (error) {
       console.log("Action failed");
     }
@@ -46,6 +55,7 @@ const Optmodel = ({
 
   const handelresendingotp = async () => {
     //calll api to resend
+    await sendemailotp({ email });
   };
 
   return (
@@ -72,8 +82,8 @@ const Optmodel = ({
 
         <InputOTP maxLength={6} value={password} onChange={setpassword}>
           <InputOTPGroup className="shad-otp">
-            <InputOTPSlot index={1} className="shad-otp-slot" />
             <InputOTPSlot index={0} className="shad-otp-slot" />
+            <InputOTPSlot index={1} className="shad-otp-slot" />
             <InputOTPSlot index={2} className="shad-otp-slot" />
 
             <InputOTPSlot index={3} className="shad-otp-slot" />
@@ -101,10 +111,15 @@ const Optmodel = ({
               )}
             </AlertDialogAction>
             <div className="submit-2 mt-2 text-center">
-                Didnt get a code?
-                <Button type="button" variant="link" className="pl-1 text-brand  " onClick={()=>handelresendingotp()} >
-  Click to resend
-                </Button>
+              Didnt get a code?
+              <Button
+                type="button"
+                variant="link"
+                className="pl-1 text-brand  "
+                onClick={() => handelresendingotp()}
+              >
+                Click to resend
+              </Button>
             </div>
           </div>
         </AlertDialogFooter>
