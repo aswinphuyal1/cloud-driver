@@ -42,7 +42,7 @@ const AuthForm = ({ type }: { type: fromtype }) => {
   const formSchema = authFormschema(type);
   const [isloading, setisloading] = useState(false);
   const [errormessage, seterrormessage] = useState("");
- const [accountId, setaccountId] = useState(null);
+ const [accountId, setaccountId] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,7 +61,7 @@ const AuthForm = ({ type }: { type: fromtype }) => {
        fullname: values.fullname || "",
        email: values.email,
      });
-     setaccointid(user.accointid);
+     setaccountId(user.accountId);
    } catch (error) {
     seterrormessage("failed to create account")
    }
@@ -155,7 +155,7 @@ const AuthForm = ({ type }: { type: fromtype }) => {
           </div>
         </form>
       </Form>
-      {accountId && (
+      {true && (
         <Optmodel email={form.getValues("email")} accountId={accountId} />
       )}
     </>
