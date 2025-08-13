@@ -85,11 +85,11 @@ const Optmodel = ({
             <InputOTPSlot index={0} className="shad-otp-slot" />
             <InputOTPSlot index={1} className="shad-otp-slot" />
             <InputOTPSlot index={2} className="shad-otp-slot" />
-
             <InputOTPSlot index={3} className="shad-otp-slot" />
             <InputOTPSlot index={4} className="shad-otp-slot" />
             <InputOTPSlot index={5} className="shad-otp-slot" />
           </InputOTPGroup>
+          
         </InputOTP>
 
         <AlertDialogFooter>
