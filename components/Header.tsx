@@ -1,9 +1,22 @@
 import React from 'react'
-
+import { Button } from './ui/button'
+import Image from 'next/image'
+import Search from './Search';
+import Fileuploader from './Fileuploader';
 const Header = () => {
   return (
-    <div>Header</div>
-  )
+    <header className="header">
+      <Search/>
+      <div className="header-wrapper">
+        <Fileuploader/>
+        <form>
+          <Button type="submit" className="sign-out-button">
+            <Image src="/assets/icons/logout.svg" alt="logo" width={24} height={24} className='w-6' />
+          </Button>
+        </form>
+      </div>
+    </header>
+  );
 }
 
 export default Header
