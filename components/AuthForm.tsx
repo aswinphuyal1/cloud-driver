@@ -20,6 +20,7 @@ import { Flavors } from "next/font/google";
 import { error } from "console";
 import Link from "next/link";
 import { kMaxLength } from "buffer";
+import { createaccount } from "@/lib/actions/user.actions";
 
 // const formSchema = z.object({
 //   username: z.string().min(2).max(50),
@@ -40,7 +41,7 @@ const AuthForm = ({ type }: { type: fromtype }) => {
   const formSchema = authFormschema(type);
   const [isloading, setisloading] = useState(false);
   const [errormessage, seterrormessage] = useState("");
-
+ const [accointid, setaccointid] = useState(null)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,7 +51,22 @@ const AuthForm = ({ type }: { type: fromtype }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+   setisloading(true)
+   seterrormessage(" ")
+  
+   try {
+     const user = await createaccount({
+       fullname: values.fullname || "",
+       email: values.email,
+     });
+     setaccointid(user.accointid);
+   } catch (error) {
+    seterrormessage("failed to create account")
+   }
+ finally{
+  setisloading(false)
+ }
+  
   };
 
   return (
