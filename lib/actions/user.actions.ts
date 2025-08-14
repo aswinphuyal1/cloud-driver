@@ -20,6 +20,7 @@ const getUserByEmail = async (email: string) => {
   return result.total > 0 ? result.documents[0] : null;
 };
 
+//created to handel the error
 const handleError = (error: unknown, message: string) => {
   console.error(message, error);
   throw new Error(message);
@@ -27,6 +28,7 @@ const handleError = (error: unknown, message: string) => {
 
 export const sendemailotp = async ({ email }: { email: string }) => {
   try {
+    //take account from createdaminclient
     const { account } = await createadminclient();
     const session = await account.createEmailToken(ID.unique(), email);
     return session.userId;
@@ -39,7 +41,7 @@ export const createaccount = async ({
   fullName,
   email,
 }: {
-  fullName: string;
+  fullName: string,
   email: string;
 }) => {
   try {
@@ -87,17 +89,11 @@ export const verifysecret = async ({
       secure: true,
 
       // Cookie Setting:
-
       // Sets an HTTP-only cookie with the session secret
-
       // Cookie attributes:
-
       //     path=/: Available across entire site
-
       //     httpOnly: Inaccessible to JavaScript (XSS protection)
-
       //     sameSite=strict: CSRF protection
-
       //     secure=true: Only sent over HTTPS
     });
     return parseStringify({ sessionId: session.$id });
@@ -114,6 +110,6 @@ export const getcurrentuser = async () => {
     appwriteconfig.usercollectionid,
     [Query.equal("accountid", [result.$id])]
   );
-  if(user.total<=0) return null;
-  return parseStringify(user.documents[0])
+  if (user.total <= 0) return null;
+  return parseStringify(user.documents[0]);
 };

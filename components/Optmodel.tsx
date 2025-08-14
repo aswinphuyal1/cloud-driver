@@ -29,7 +29,7 @@ const Optmodel = ({
   accountid,
   email,
 }: {
-  accountid: string;
+  accountid: string,
   email: string;
 }) => {
   const router = useRouter();

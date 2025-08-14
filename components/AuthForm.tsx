@@ -39,6 +39,7 @@ const authFormschema = (formType: fromtype) => {
   });
 };
 
+
 const AuthForm = ({ type }: { type: fromtype }) => {
   const formSchema = authFormschema(type);
   const [isloading, setisloading] = useState(false);
