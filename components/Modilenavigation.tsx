@@ -14,6 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import Fileuploader from "./Fileuploader";
 interface Props {
   fullName: string;
   avatar: string;
@@ -93,7 +94,7 @@ const Modilenavigation = ({
           </nav>
           <Separator className="my-5 bg-light-200/20" />
           <div className="flex flex-col justify-between gap-5 pb-5">
-            Fileuploader
+            <Fileuploader/>
           </div>
           <form>
             <Button type="submit" className="mobile-sign-out-button" onClick={()=>
