@@ -48,6 +48,7 @@ const Modilenavigation = ({ownerId,accountId,fullName,avatar,email}:Props) => {
 <p className='subtitle-2 capitalize'>{fullName}</p>
 <p className='caption'>{email}</p>
 
+
               </div>
             </div>
           </SheetTitle>
