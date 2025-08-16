@@ -27,7 +27,15 @@ const Modilenavigation = ({ownerId,accountId,fullName,avatar,email}:Props) => {
         </SheetTrigger>
         <SheetContent className="shad-sheet h-screen px-3">
           <SheetTitle>
-           
+            <div className="header-user">
+              <Image
+                src={avatar}
+                height={44}
+                width={44}
+                alt="avatar"
+                className="header-user-avatar"
+              />
+            </div>
           </SheetTitle>
           <SheetDescription>
             This action cannot be undone. This will permanently delete your
