@@ -10,6 +10,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { string } from 'zod';
+interface Props
+{
+  ownerId:string
+  ,accountId:string
+  ,fullName:string
+  ,avatar:string
+  ,email:string
+}
 const Modilenavigation = ({ownerId,accountId,fullName,avatar,email}:Props) => {
   const [open, setopen] = useState(false)
   return (
