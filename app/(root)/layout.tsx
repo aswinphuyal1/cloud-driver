@@ -11,7 +11,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
     <main className="flex h-screen">
       <Sidebar {...currentusser} />
       <section className="flex h-full flex-1 flex-col">
-        <Modilenavigation />
+        <Modilenavigation  {...currentusser} />
         <Header />
         <div className="main-content">{children}</div>
       </section>
@@ -20,3 +20,4 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
 };
 
 export default layout;
+

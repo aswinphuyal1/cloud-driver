@@ -25,14 +25,16 @@ const Modilenavigation = () => {
         <SheetTrigger>
           <Image src="/assets/icons/menu.svg" alt=''width={30} height={30}/>
         </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Are you absolutely sure?</SheetTitle>
+        <SheetContent className='shad-sheet h-screen px-3'>
+         
+            <SheetTitle>
+              
+            </SheetTitle>
             <SheetDescription>
               This action cannot be undone. This will permanently delete your
               account and remove your data from our servers.
             </SheetDescription>
-          </SheetHeader>
+          
         </SheetContent>
       </Sheet>
     </header>
