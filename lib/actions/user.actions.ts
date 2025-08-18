@@ -6,6 +6,9 @@ import { appwriteconfig } from "../appwrite/config";
 import { cookies } from "next/headers";
 import { avatarPlaceholderUrl } from "@/constants";
 import { redirect } from "next/navigation";
+import { parseEnv } from "util";
+import { Value } from "@radix-ui/react-select";
+import { error } from "console";
 
 const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
@@ -42,7 +45,7 @@ export const createaccount = async ({
   fullName,
   email,
 }: {
-  fullName: string,
+  fullName: string;
   email: string;
 }) => {
   try {
@@ -115,17 +118,32 @@ export const getcurrentuser = async () => {
   return parseStringify(user.documents[0]);
 };
 
+export const Signoutuser = async () => {
+  const { account } = await createsessionclient();
+  try {
+    // Delete the current session
+    await account.deleteSession("current");
+    (await cookies()).delete("appwrite-session");
+  } catch (error) {
+    handleError(error, "failed to sign out users");
+  } finally {
+    redirect("/sign-in");
+  }
+};
 
-export const Signoutuser= async()=>
+export const signinuser =async({ email }: { email: string }) => {
+  try {
+    
+const existinguser =  await getUserByEmail(email);
+if(existinguser)
 {
-  const {account}= await createsessionclient();
- try {
-   // Delete the current session
-await  account.deleteSession("current");
-   (await cookies()).delete("appwrite-session")
- } catch (error) {
-  handleError(error,"failed to sign out users")
- }finally{
-  redirect('/sign-in')
- }
+ await sendemailotp({email})
+ return parseStringify({ accountId: existinguser.accountId });
 }
+
+return parseStringify({ accountId:null,error:"user not found" });
+
+  } catch (error) {
+      handleError(error, "failed to sign IN ");
+  }
+};
