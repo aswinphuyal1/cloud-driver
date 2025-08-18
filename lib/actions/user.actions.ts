@@ -51,9 +51,9 @@ export const createaccount = async ({
   try {
     const existinguser = await getUserByEmail(email);
 
-    const accountid = await sendemailotp({ email });
+    const accountId = await sendemailotp({ email });
 
-    if (!accountid) throw new Error("Failed to send an OTP and create user.");
+    if (!accountId) throw new Error("Failed to send an OTP and create user.");
 
     if (!existinguser) {
       const { databases } = await createadminclient();
@@ -65,12 +65,12 @@ export const createaccount = async ({
           fullName,
           email,
           avatar: avatarPlaceholderUrl,
-          accountid: accountid,
+          accountid: accountId,
         }
       );
     }
 
-    return parseStringify({ accountid: accountid });
+    return parseStringify({ accountid: accountId });
   } catch (error) {
     handleError(error, "Failed to create account.");
   }
@@ -131,19 +131,33 @@ export const Signoutuser = async () => {
   }
 };
 
-export const signinuser =async({ email }: { email: string }) => {
+// export const signinuser = async ({ email }: { email: string }) => {
+//   try {
+//     const existinguser = await getUserByEmail(email);
+//     if (existinguser) {
+//       await sendemailotp({ email });
+//       return parseStringify({ accountId: existinguser.accountId});
+//     }
+
+//     return parseStringify({ accountId: null, error: "user not found" });
+//   } catch (error) {
+//     handleError(error, "failed to sign IN ");
+//   }
+// };
+export const signinuser = async ({ email }: { email: string }) => {
   try {
-    
-const existinguser =  await getUserByEmail(email);
-if(existinguser)
-{
- await sendemailotp({email})
- return parseStringify({ accountId: existinguser.accountId });
-}
+    const existinguser = await getUserByEmail(email);
+    if (existinguser) {
+      await sendemailotp({ email });
+      // This is correct: returning an object with the accountId
+      return parseStringify({ accountId: existinguser.accountId });
+    }
 
-return parseStringify({ accountId:null,error:"user not found" });
-
+    // This is also correct: returning an object with an error message
+    return parseStringify({ accountId: null, error: "User not found" });
   } catch (error) {
-      handleError(error, "failed to sign IN ");
+    // Correctly handle the error and re-throw it so the frontend can catch it
+    handleError(error, "Failed to sign in.");
+    throw error;
   }
 };
