@@ -5,6 +5,7 @@ import { createadminclient, createsessionclient } from "../appwrite";
 import { appwriteconfig } from "../appwrite/config";
 import { cookies } from "next/headers";
 import { avatarPlaceholderUrl } from "@/constants";
+import { redirect } from "next/navigation";
 
 const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
@@ -113,3 +114,18 @@ export const getcurrentuser = async () => {
   if (user.total <= 0) return null;
   return parseStringify(user.documents[0]);
 };
+
+
+export const Signoutuser= async()=>
+{
+  const {account}= await createsessionclient();
+ try {
+   // Delete the current session
+await  account.deleteSession("current");
+   (await cookies()).delete("appwrite-session")
+ } catch (error) {
+  handleError(error,"failed to sign out users")
+ }finally{
+  redirect('/sign-in')
+ }
+}

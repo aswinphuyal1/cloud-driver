@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import Fileuploader from "./Fileuploader";
+import { Signoutuser } from "@/lib/actions/user.actions";
 interface Props {
   fullName: string;
   avatar: string;
@@ -97,9 +98,9 @@ const Modilenavigation = ({
             <Fileuploader/>
           </div>
           <form>
-            <Button type="submit" className="mobile-sign-out-button" onClick={()=>
+            <Button type="submit" className="mobile-sign-out-button" onClick={async()=>
               {
-
+await Signoutuser()
               }
             }>
               <Image
