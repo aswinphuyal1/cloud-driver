@@ -18,7 +18,14 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   return (
     <div {...getRootProps()} className="cursor-pointer">
       <input {...getInputProps()} />
-    
+      <Button type="button" className={cn("uploader-button", className)}>
+        <Image
+          src="/assets/icons/upload.svg"
+          alt="upload"
+          width={24}
+          height={24}
+        />
+      </Button>
       {isDragActive ? (
         <p>Upload</p>
       ) : (
