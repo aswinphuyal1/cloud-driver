@@ -6,6 +6,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { getFileType } from "@/lib/utils";
+import Link from "next/link";
+import Thumbnail from "./Thumbnail";
+
 interface Props {
   ownerid: string;
   accountid: string;
@@ -14,8 +17,8 @@ interface Props {
 const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   //initially files like arrya banako
   const [files, setfiles] = useState<File[]>([])
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
+  const onDrop = useCallback(async(acceptedFiles:File[]) => {
+ setfiles(acceptedFiles)
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -36,7 +39,15 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
 Uploading
 {files.map((file,index)=>
 {//destructure
-  const {type,extension}=getFileType(file.name);
+  const {type,extension}=getFileType(file.name)
+  return(
+    <li key={`${file.name}-${index}`} className="uploader-preview-item">
+      <div className="flex items-center gap-3">
+<Thumbnail/>
+      </div>
+    </li>
+  )
+  ;
 })}
 </h4>
         </ul>
