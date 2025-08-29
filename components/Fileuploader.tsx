@@ -5,14 +5,14 @@ import { Button } from "./ui/button";
 import Image from "next/image";
 import { cn, convertFileToUrl } from "@/lib/utils";
 import { useState } from "react";
-import { getFileType } from "@/lib/utils"; 
+import { getFileType } from "@/lib/utils";
 import Thumbnail from "./Thumbnail";
 
 interface Props {
   ownerid: string;
   accountid: string;
   className?: string;
-  url:string
+  url: string;
 }
 const Fileuploader = ({ className }: Props) => {
   //initially files like arrya banako
@@ -20,6 +20,18 @@ const Fileuploader = ({ className }: Props) => {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
   }, []);
+  const handelRemoveFile = (
+    e: React.MouseEvent<HTMLImageElement,MouseEvent>,
+    filename: string
+  ) => {
+    e.stopPropagation();
+    setFiles((prevfiles) =>
+      prevfiles.filter((file) => {
+        file.name !== filename;
+      })
+    );
+  };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
@@ -53,11 +65,22 @@ const Fileuploader = ({ className }: Props) => {
                       name={file.name}
                     />
                     <div className="preview-item-name">
-{file.name}
-<Image src='/assets/icons/file-loader.gif' width={80 }
-height={26} alt="loader"/>
+                      {file.name}
+                      <Image
+                        src="/assets/icons/file-loader.gif"
+                        width={80}
+                        height={26}
+                        alt="loader"
+                      />
                     </div>
                   </div>
+                  <Image
+                    src="/assets/icons/remove.svg"
+                    width={24}
+                    height={24}
+                    alt="remove"
+                    onClick={(e) => handelRemoveFile(e, file.name)}
+                  />
                 </li>
               );
             })}
