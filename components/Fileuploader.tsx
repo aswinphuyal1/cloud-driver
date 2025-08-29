@@ -3,22 +3,22 @@ import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "./ui/button";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { cn, convertFileToUrl } from "@/lib/utils";
 import { useState } from "react";
-import { getFileType } from "@/lib/utils";
-import Link from "next/link";
+import { getFileType } from "@/lib/utils"; 
 import Thumbnail from "./Thumbnail";
 
 interface Props {
   ownerid: string;
   accountid: string;
-  className: string;
+  className?: string;
+  url:string
 }
-const Fileuploader = ({ ownerid, accountid, className }: Props) => {
+const Fileuploader = ({ className }: Props) => {
   //initially files like arrya banako
-  const [files, setfiles] = useState<File[]>([])
-  const onDrop = useCallback(async(acceptedFiles:File[]) => {
- setfiles(acceptedFiles)
+  const [files, setFiles] = useState<File[]>([]);
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    setFiles(acceptedFiles);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -33,25 +33,32 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
           height={24}
         />
       </Button>
-      {files.length>0}&&{
-        <ul className="uploader-preview-list">
-<h4 className="h4 text-light-100 ">
-Uploading
-{files.map((file,index)=>
-{//destructure
-  const {type,extension}=getFileType(file.name)
-  return(
-    <li key={`${file.name}-${index}`} className="uploader-preview-item">
-      <div className="flex items-center gap-3">
-<Thumbnail/>
-      </div>
-    </li>
-  )
-  ;
-})}
-</h4>
-        </ul>
-      }
+      {files.length > 0 && (
+        <>
+          <h4 className="h4 text-light-100">Uploading</h4>
+          <ul className="uploader-preview-list">
+            {files.map((file, index) => {
+              //destructure
+              const { type, extension } = getFileType(file.name);
+              return (
+                <li
+                  key={`${file.name}-${index}`}
+                  className="uploader-preview-item"
+                >
+                  <div className="flex items-center gap-3">
+                    <Thumbnail
+                      type={type}
+                      extension={extension}
+                      url={convertFileToUrl(file)}
+                      name={file.name}
+                    />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
       {isDragActive ? (
         <p>Upload</p>
       ) : (
