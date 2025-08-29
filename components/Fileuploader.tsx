@@ -52,6 +52,11 @@ const Fileuploader = ({ className }: Props) => {
                       url={convertFileToUrl(file)}
                       name={file.name}
                     />
+                    <div className="preview-item-name">
+{file.name}
+<Image src='/assets/icons/file-loader.gif' width={80 }
+height={26} alt="loader"/>
+                    </div>
                   </div>
                 </li>
               );
