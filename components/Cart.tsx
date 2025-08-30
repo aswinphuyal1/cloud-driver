@@ -19,7 +19,7 @@ const Cart = ({ file }: { file: Models.Document }) => {
           imageClassName="!size-11"
         />
         <div className="flex flex-col items-end justify-between">
-        <Actiondropdown/>
+        <Actiondropdown file={file}/>
           <p className="body-1">{convertFileSize(file.size)}</p>
         </div>
       </div>

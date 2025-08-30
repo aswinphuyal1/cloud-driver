@@ -181,9 +181,10 @@ export const constructFileUrl = (bucketFileId: string) => {
       "Appwrite Project ID is undefined! Check your .env file and restart the dev server."
     );
   }
+  // Debug: log the projectId
+  // console.log("Appwrite Project ID:", projectId);
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/view?project=${projectId}`;
 };
-
 
 export const constructDownloadUrl = (bucketFileId: string) => {
   const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID;
@@ -192,6 +193,8 @@ export const constructDownloadUrl = (bucketFileId: string) => {
       "Appwrite Project ID is undefined! Check your .env file and restart the dev server."
     );
   }
+  // Debug: log the projectId
+  // console.log("Appwrite Project ID:", projectId);
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/download?project=${projectId}`;
 };
 
