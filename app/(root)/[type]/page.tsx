@@ -1,3 +1,4 @@
+import Cart from "@/components/Cart";
 import Sort from "@/components/Sort";
 import { getfiles } from "@/lib/actions/file.actions";
 import React from "react";
@@ -24,7 +25,7 @@ const page = async ({ params }: SearchParamProps) => {
         <section className="file-list">
           {files.documents.map((file: any) => (
             <h1 key={file.$id} className="h1">
-              {file.name}
+              <Cart/>
             </h1>
           ))}
         </section>
