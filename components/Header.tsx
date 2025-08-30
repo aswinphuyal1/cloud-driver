@@ -4,16 +4,16 @@ import Image from 'next/image'
 import Search from './Search';
 import Fileuploader from './Fileuploader';
 import { Signoutuser } from '@/lib/actions/user.actions';
-const Header = () => {
+const Header = ({userid,accountid}:{userid:string;accountid:string}) => {
   return (
     <header className="header">
       <Search />
       <div className="header-wrapper">
-        <Fileuploader  />
+        <Fileuploader ownerid={userid} accountid={accountid} />
         <form
           action={async () => {
             "use server";
-            await Signoutuser()
+            await Signoutuser();
           }}
         >
           <Button type="submit" className="sign-out-button">

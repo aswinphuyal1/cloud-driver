@@ -20,12 +20,12 @@ interface Props {
   fullName: string;
   avatar: string;
   email: string;
-  ownerId:string,
-  accountId:string
+  $id:string,
+  accountid:string
 }
 const Modilenavigation = ({
-  ownerId,
-  accountId,
+  $id:ownerid,
+  accountid,
   fullName,
   avatar,
   email,
@@ -95,7 +95,7 @@ const Modilenavigation = ({
           </nav>
           <Separator className="my-5 bg-light-200/20" />
           <div className="flex flex-col justify-between gap-5 pb-5">
-            <Fileuploader/>
+            <Fileuploader ownerid={ownerid} accountid={accountid}/>
           </div>
           <form>
             <Button type="submit" className="mobile-sign-out-button" onClick={async()=>
