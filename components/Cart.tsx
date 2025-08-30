@@ -1,11 +1,11 @@
-import Link from 'next/link'
-import { Models } from 'node-appwrite'
-import React from 'react'
-import Thumbnail from './Thumbnail'
-import { convertFileSize } from '@/lib/utils'
-import Formatteddatetime from './Formatteddatetime'
+import Link from "next/link";
+import { Models } from "node-appwrite";
+import React from "react";
+import Thumbnail from "./Thumbnail";
+import { convertFileSize } from "@/lib/utils";
+import Formatteddatetime from "./Formatteddatetime";
 
-const Cart = ({file}:{file:Models.Document}) => {
+const Cart = ({ file }: { file: Models.Document }) => {
   return (
     <Link href={file.url} target="_blank" className="file-card">
       <div className="flex justify-between">
@@ -23,12 +23,15 @@ const Cart = ({file}:{file:Models.Document}) => {
         </div>
       </div>
       <div className="file-card-details">
-        
         <p className="subtitle-2 line-clamp-1">{file.name}</p>
-        <Formatteddatetime/>
+        <Formatteddatetime
+          date={file.$createdAt}
+          className="body-2 text-light-100"
+        />
+        <p className="">{file.owner.full}</p>
       </div>
     </Link>
   );
-}
+};
 
-export default Cart
+export default Cart;
