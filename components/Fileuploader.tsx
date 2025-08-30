@@ -7,6 +7,8 @@ import { cn, convertFileToUrl } from "@/lib/utils";
 import { useState } from "react";
 import { getFileType } from "@/lib/utils";
 import Thumbnail from "./Thumbnail";
+import { MAX_FILE_SIZE } from "@/constants";
+import { useToast } from "@/hooks/use-toast";
 
 interface Props {
   ownerid: string;
@@ -14,14 +16,21 @@ interface Props {
   className?: string;
   url: string;
 }
-const Fileuploader = ({ className }: Props) => {
+const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   //initially files like arrya banako
+
+  const {toast}=useToast();
   const [files, setFiles] = useState<File[]>([]);
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
+    const uploadpromises = acceptedFiles.map(async (file) => {
+      if (file.size > MAX_FILE_SIZE) {
+        setFiles((prevfiles) => prevfiles.filter((f) => f.name !== file.name));
+      }
+    });
   }, []);
   const handelRemoveFile = (
-    e: React.MouseEvent<HTMLImageElement,MouseEvent>,
+    e: React.MouseEvent<HTMLImageElement, MouseEvent>,
     filename: string
   ) => {
     e.stopPropagation();
