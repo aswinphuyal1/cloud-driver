@@ -19,17 +19,34 @@ interface Props {
 const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   //initially files like arrya banako
 
-  const {toast}=useToast();
+  const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    setFiles(acceptedFiles);
-    const uploadpromises = acceptedFiles.map(async (file) => {
-      if (file.size > MAX_FILE_SIZE) {
-        setFiles((prevfiles) => prevfiles.filter((f) => f.name !== file.name));
-      }
-    });
-  }, []);
-  const handelRemoveFile = (
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const filesToUpload: File[] = [];
+      acceptedFiles.forEach((file) => {
+        if (file.size > MAX_FILE_SIZE) {
+          toast({
+            title: "File too large",
+            description: (
+              <p className="body-2 text-white">
+                <span className="font-semibold">{file.name}</span>
+                is too large.
+              </p>
+            ),
+            variant: "destructive",
+          });
+        } else {
+          filesToUpload.push(file);
+        }
+      });
+
+      setFiles(filesToUpload);
+      // TODO: Handle the actual file upload logic for filesToUpload
+    },
+    [toast]
+  );
+  const handleRemoveFile = (
     e: React.MouseEvent<HTMLImageElement, MouseEvent>,
     filename: string
   ) => {
@@ -88,7 +105,7 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
                     width={24}
                     height={24}
                     alt="remove"
-                    onClick={(e) => handelRemoveFile(e, file.name)}
+                    onClick={(e) => handleRemoveFile(e, file.name)}
                   />
                 </li>
               );

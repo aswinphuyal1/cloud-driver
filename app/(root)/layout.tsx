@@ -4,6 +4,9 @@ import React from "react";
 import Header from "@/components/Header";
 import { getcurrentuser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
+import { Toaster } from "@/components/ui/toaster";
+
+
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const currentusser = await getcurrentuser();
   if(!currentusser) return redirect(('/sign-in'))
@@ -15,6 +18,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
         <Header />
         <div className="main-content">{children}</div>
       </section>
+      <Toaster/>
     </main>
   );
 };
