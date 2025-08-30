@@ -21,42 +21,42 @@ export const uploadfile = async ({
     const inputfile = InputFile.fromBuffer(file, file.name);
 
     const bucketfile = await storage.createFile(
-    
-    //where we going to store
-        appwriteconfig.bucketid,
-        //input garne ko id
+      //where we going to store
+      appwriteconfig.bucketid,
+      //input garne ko id
       ID.unique(),
       //kuninput garne
-      inputfile
+      inputfile // File content
     );
 
-    const filedocument=
-    {
-        type:getFileType(bucketfile.name).type,
-        name:bucketfile.name,
-        url:constructFileUrl(bucketfile.$id),
-        extension:getFileType(bucketfile.name).extension,
-        size:bucketfile.sizeOriginal,
-        owner:ownerId,
-        accountid,
-        users:[],
-        bucketfileid:bucketfile.$id
+    // File metadata document
+    const filedocument = {
+      type: getFileType(bucketfile.name).type, // File type (image, document, etc.)
+      name: bucketfile.name, // Original filename
+      url: constructFileUrl(bucketfile.$id), // Access URL
+      extension: getFileType(bucketfile.name).extension, // File extension
+      size: bucketfile.sizeOriginal, // File size in bytes
+      owner: ownerId, // User who uploaded
+      accountid, // Associated account
+      users: [], // Empty array for shared users
+      bucketfileid: bucketfile.$id, // Reference to storage file
     };
-    const newfile=await databases.createDocument(
-      appwriteconfig.databaseid,
-      appwriteconfig.filescollectionid,
-      ID.unique(),
-      filedocument
-    )
-    .catch(async(error:unknown)=>
-    {
-      await storage.deleteFile(appwriteconfig.bucketid,bucketfile.$id);
-      handleError(error,"failed to create file document");
-    });
+    const newfile = await databases
+      .createDocument(
+        appwriteconfig.databaseid,
+        appwriteconfig.filescollectionid,
+        ID.unique(),
+        filedocument
+      )
+      .catch(async (error: unknown) => {
+        await storage.deleteFile(appwriteconfig.bucketid, bucketfile.$id);
+        handleError(error, "failed to create file document");
+      });
+    //Invalidates Next.js cache for the specified path
     revalidatePath(path);
     return parseStringify(newfile);
-
   } catch (error) {
+    console.log(error);
     handleError(error, "file upload fail!!!!!!");
   }
 };

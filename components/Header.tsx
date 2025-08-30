@@ -11,6 +11,7 @@ const Header = ({userid,accountid}:{userid:string;accountid:string}) => {
       <div className="header-wrapper">
         <Fileuploader ownerid={userid} accountid={accountid} />
         <form
+        //making this component specially a server components
           action={async () => {
             "use server";
             await Signoutuser();

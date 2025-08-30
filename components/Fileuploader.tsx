@@ -18,12 +18,13 @@ interface Props {
   className?: string;
  // url: string;
 }
-\
+
 const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   //initially files like arrya banako
   const path = usePathname();
   const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       // Filter out files that are too large and show toast for them
@@ -63,6 +64,7 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
         )
       );
     },
+    //he function will only be re-created if one of these dependencies changes
     [toast, ownerid, accountid, path]
   );
   const handleRemoveFile = (
