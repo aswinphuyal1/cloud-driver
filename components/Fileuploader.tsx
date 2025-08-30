@@ -9,6 +9,8 @@ import { getFileType } from "@/lib/utils";
 import Thumbnail from "./Thumbnail";
 import { MAX_FILE_SIZE } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
+import { uploadfile } from "@/lib/actions/file.actions";
+import { usePathname } from "next/navigation";
 
 interface Props {
   ownerid: string;
@@ -18,7 +20,7 @@ interface Props {
 }
 const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   //initially files like arrya banako
-
+  const path = usePathname();
   const { toast } = useToast();
   const [files, setFiles] = useState<File[]>([]);
   const onDrop = useCallback(
@@ -30,8 +32,7 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
             title: "File too large",
             description: (
               <p className="body-2 text-white">
-                <span className="font-semibold">{file.name}</span>
-                is too large.
+                <span className="font-semibold">{file.name} is too large </span>
               </p>
             ),
             variant: "destructive",
@@ -39,6 +40,16 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
         } else {
           filesToUpload.push(file);
         }
+        return uploadfile({
+          file: file,
+          ownerId: ownerid,
+          accountid: accountid,
+          path: path,
+        }).then((uploadfile) => {
+          if (uploadfile) {
+            setFiles((prevfiles) => prevfiles.filter((f) => f.name !== file.name))
+          }
+        });
       });
 
       setFiles(filesToUpload);
@@ -52,9 +63,8 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   ) => {
     e.stopPropagation();
     setFiles((prevfiles) =>
-      prevfiles.filter((file) => {
-        file.name !== filename;
-      })
+      prevfiles.filter((file) =>file.name !== filename
+      )
     );
   };
 

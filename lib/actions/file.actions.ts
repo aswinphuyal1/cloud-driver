@@ -10,7 +10,7 @@ const handleError = (error: unknown, message: string) => {
   console.error(message, error);
   throw new Error(message);
 };
-export const uploadfilr = async ({
+export const uploadfile = async ({
   file,
   ownerId,
   accountid,
