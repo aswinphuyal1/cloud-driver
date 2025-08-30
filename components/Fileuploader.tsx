@@ -18,6 +18,7 @@ interface Props {
   className?: string;
  // url: string;
 }
+\
 const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   //initially files like arrya banako
   const path = usePathname();
