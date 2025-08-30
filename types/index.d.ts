@@ -14,6 +14,7 @@ declare interface SearchParamProps {
 }
 
 declare interface UploadFileProps {
+  
   file: File;
   ownerId: string;
   accountid: string;

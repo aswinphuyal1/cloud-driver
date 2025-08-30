@@ -63,32 +63,30 @@ export const uploadfile = async ({
   }
 };
 
-const createqueries = (currentusser:Models.Document)=>
-{const queries =
-   [Query.or([
-  Query.equal('owner',[currentusser.$id]),
-  Query.contains('users',[currentusser.email])
-
-])];
-return queries
-}
-export const getfiles=async ()=>
-{
-  const {databases}= await createadminclient();
+const createqueries = (currentusser: Models.Document) => {
+  const queries = [
+    Query.or([
+      Query.equal("owner", [currentusser.$id]),
+      Query.contains("users", [currentusser.email]),
+    ]),
+  ];
+  return queries;
+};
+export const getfiles = async () => {
+  const { databases } = await createadminclient();
   try {
     //we only nedd to show the currne user files
-    const currentusser= await getcurrentuser()
-    if(!currentusser) throw new Error("user not found")
-      const queries =createqueries(currentusser);
-  //  console.log({currentusser,queries})
-    const files= await databases.listDocuments(
+    const currentusser = await getcurrentuser();
+    if (!currentusser) throw new Error("user not found");
+    const queries = createqueries(currentusser);
+    //  console.log({currentusser,queries})
+    const files = await databases.listDocuments(
       appwriteconfig.databaseid,
       appwriteconfig.filescollectionid,
-      queries,
-    )
-    return parseStringify(files)
+      queries
+    );
+    return parseStringify(files);
   } catch (error) {
-    handleError(error,"filed to get files")
+    handleError(error, "filed to get files");
   }
-}
-
+};
