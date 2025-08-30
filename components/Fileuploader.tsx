@@ -16,7 +16,7 @@ interface Props {
   ownerid: string;
   accountid: string;
   className?: string;
-  url: string;
+ // url: string;
 }
 const Fileuploader = ({ ownerid, accountid, className }: Props) => {
   //initially files like arrya banako
