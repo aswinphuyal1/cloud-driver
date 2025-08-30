@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  //by defualt limit 5 mb hunxa so changing it to 100Mb
   experimental: {
     serverActions: {
       bodySizeLimit: "100MB",
