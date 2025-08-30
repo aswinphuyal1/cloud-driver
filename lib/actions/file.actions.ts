@@ -67,7 +67,7 @@ const createqueries = (currentusser:Models.Document)=>
 {const queries =
    [Query.or([
   Query.equal('owner',[currentusser.$id]),
-  Query.equal('users',[currentusser.email])
+  Query.contains('users',[currentusser.email])
 
 ])];
 return queries
@@ -80,6 +80,7 @@ export const getfiles=async ()=>
     const currentusser= await getcurrentuser()
     if(!currentusser) throw new Error("user not found")
       const queries =createqueries(currentusser);
+  //  console.log({currentusser,queries})
     const files= await databases.listDocuments(
       appwriteconfig.databaseid,
       appwriteconfig.filescollectionid,
