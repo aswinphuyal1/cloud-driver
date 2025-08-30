@@ -40,7 +40,7 @@ export const uploadfile = async ({
         owner:ownerId,
         accountid,
         users:[],
-        bucketfileID:bucketfile.$id
+        bucketfileid:bucketfile.$id
     };
     const newfile=await databases.createDocument(
       appwriteconfig.databaseid,

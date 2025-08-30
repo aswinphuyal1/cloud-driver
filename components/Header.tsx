@@ -9,7 +9,7 @@ const Header = () => {
     <header className="header">
       <Search />
       <div className="header-wrapper">
-        <Fileuploader />
+        <Fileuploader  />
         <form
           action={async () => {
             "use server";

@@ -130,7 +130,7 @@ const Fileuploader = ({ ownerid, accountid, className }: Props) => {
       {isDragActive ? (
         <p>Upload</p>
       ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p></p>
       )}
     </div>
   );
