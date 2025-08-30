@@ -4,6 +4,7 @@ import React from "react";
 import Thumbnail from "./Thumbnail";
 import { convertFileSize } from "@/lib/utils";
 import Formatteddatetime from "./Formatteddatetime";
+import Actiondropdown from "./Actiondropdown";
 
 const Cart = ({ file }: { file: Models.Document }) => {
   return (
@@ -18,7 +19,7 @@ const Cart = ({ file }: { file: Models.Document }) => {
           imageClassName="!size-11"
         />
         <div className="flex flex-col items-end justify-between">
-        action drop down
+        <Actiondropdown/>
           <p className="body-1">{convertFileSize(file.size)}</p>
         </div>
       </div>
