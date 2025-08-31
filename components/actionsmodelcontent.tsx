@@ -75,13 +75,16 @@ export const Shareinput = ({ file, oninputchange, onremove }: props) => {
             </p>
           </div>
           <ul className="pt-2 ">
-            {file.users.map((email: string) => {
+            {file.users.map((email: string) => (
               <li
                 key={email}
                 className="flex items-center justify-between gap-2"
               >
                 <p className="subtitle-2">{email}</p>
-                <Button onClick={() => onremove(email)}>
+                <Button
+                  onClick={() => onremove(email)}
+                  className="share-remove-user"
+                >
                   <Image
                     src="/assets/icons/remove.svg"
                     alt="remove"
@@ -90,8 +93,8 @@ export const Shareinput = ({ file, oninputchange, onremove }: props) => {
                     className="remove-icon"
                   />
                 </Button>
-              </li>;
-            })}
+              </li>
+            ))}
           </ul>
         </div>
       </div>

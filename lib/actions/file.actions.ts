@@ -91,7 +91,7 @@ export const getfiles = async () => {
   }
 };
 
- export const renamefile = async ({
+export const renamefile = async ({
   fileId,
   name,
   extension,
@@ -116,3 +116,26 @@ export const getfiles = async () => {
   }
 };
 
+export const updatefileusers = async ({
+  fileId,
+  emails,
+
+  path,
+}: UpdateFileUsersProps) => {
+  const { databases } = await createadminclient();
+  try {
+    const updatefile = await databases.updateDocument(
+      appwriteconfig.databaseid,
+      appwriteconfig.filescollectionid,
+      fileId,
+      {
+        users: emails,
+      }
+    );
+    // Optionally revalidate path if needed
+    revalidatePath(path);
+    return parseStringify(updatefile);
+  } catch (error) {
+    handleError(error, "failed to rename");
+  }
+};

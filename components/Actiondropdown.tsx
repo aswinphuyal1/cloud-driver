@@ -29,7 +29,8 @@ import { Button } from "./ui/button";
 import { renamefile } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
 import { FileDetails, Shareinput } from "./actionsmodelcontent";
-
+import { any, string } from "zod";
+import { updatefileusers } from "@/lib/actions/file.actions";
 type ActionType = {
   value: string;
   label: string;
@@ -58,7 +59,13 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
     const actions = {
       rename: () =>
         renamefile({ fileId: file.$id, name, extension: file.extension, path }),
-      share: () => {},
+      share: () =>
+        updatefileusers({
+          fileId: file.$id,
+          emails: email,
+
+          path,
+        }),
       delete: () => {},
     };
     //This line dynamically calls a function from the actions object
