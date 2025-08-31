@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,6 +23,9 @@ import { Models } from "node-appwrite";
 import { actionsDropdownItems } from "@/constants";
 import Link from "next/link";
 import { constructDownloadUrl } from "@/lib/utils";
+import { Label } from "recharts";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 type ActionType = {
   value: string;
@@ -32,6 +36,55 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
   const [ismodelopen, setismodelopen] = useState(false);
   const [isdropdownopen, setisdropdownopen] = useState(false);
   const [action, setaction] = useState<ActionType | null>(null);
+  const [name, setname] = useState(file.name);
+  const [isloading, setisloading] = useState(false);
+  const closeallmodels = () => {
+    setismodelopen(false);
+    setisdropdownopen(false);
+    setaction(null);
+    setname(file.name);
+    //setemail([])
+  };
+
+  const handelaction = async () => {};
+
+  const renderdialogcontent = () => {
+    if (!action) return null;
+    const { value, label } = action;
+    return (
+      <DialogContent className="shad-dialog button">
+        <DialogHeader className="flex flex-col gap-3">
+          <DialogTitle className="text-center text-light-100">
+            {label}
+          </DialogTitle>
+          {value === "rename" && (
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setname(e.target.value)}
+            />
+          )}
+        </DialogHeader>
+        {["rename", "delete", "share"].includes(value) && (
+          <DialogFooter className="flex flex-col gap-3">
+            <Button onClick={closeallmodels} className="modal-cancel-button">Cancle</Button>
+            <Button onClick={handelaction} className="modal-submit-button">
+              <p className="capitalize">{value}</p>
+              {isloading && (
+                <Image
+                  src="/assets/icons/loader.svg"
+                  alt="loader"
+                  width={24}
+                  height={24}
+                  className="animate-spin"
+                />
+              )}
+            </Button>
+          </DialogFooter>
+        )}
+      </DialogContent>
+    );
+  };
   return (
     <Dialog open={ismodelopen} onOpenChange={setismodelopen}>
       <DropdownMenu open={isdropdownopen} onOpenChange={setisdropdownopen}>
@@ -90,6 +143,7 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
+      {renderdialogcontent()}
     </Dialog>
   );
 };
