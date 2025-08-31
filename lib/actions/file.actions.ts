@@ -119,7 +119,6 @@ export const renamefile = async ({
 export const updatefileusers = async ({
   fileId,
   emails,
-
   path,
 }: UpdateFileUsersProps) => {
   const { databases } = await createadminclient();
@@ -135,6 +134,29 @@ export const updatefileusers = async ({
     // Optionally revalidate path if needed
     revalidatePath(path);
     return parseStringify(updatefile);
+  } catch (error) {
+    handleError(error, "failed to rename");
+  }
+};
+
+export const deletefile = async ({
+  fileId,
+  bucketFileId,
+  path,
+}: DeleteFileProps) => {
+  const { databases,storage } = await createadminclient();
+  try {
+    const deletedfile = await databases.deleteDocument(
+      appwriteconfig.databaseid,
+      appwriteconfig.filescollectionid,
+      fileId,
+    
+    );
+    if(deletedfile) 
+      await storage.deleteFile(appwriteconfig.bucketid,bucketFileId)
+    // Optionally revalidate path if needed
+    revalidatePath(path);
+    return parseStringify('success');
   } catch (error) {
     handleError(error, "failed to rename");
   }

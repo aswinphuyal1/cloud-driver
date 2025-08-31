@@ -26,7 +26,7 @@ import { constructDownloadUrl } from "@/lib/utils";
 import { Label } from "recharts";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { renamefile } from "@/lib/actions/file.actions";
+import { deletefile, renamefile } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
 import { FileDetails, Shareinput } from "./actionsmodelcontent";
 import { any, string } from "zod";
@@ -66,7 +66,8 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
 
           path,
         }),
-      delete: () => {},
+      delete: () =>
+        deletefile({ fileId: file.$id, bucketFileId: file.bucketfileid, path }),
     };
     //This line dynamically calls a function from the actions object
     // based on the key in action.value and waits for the result, then assigns that result to success.
@@ -75,23 +76,22 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
     setisloading(false);
   };
 
-const handelremoveuser = async (removeEmail: string) => {
-  // filter out the email we want to remove
-  const updatedEmails = email.filter((e) => e !== removeEmail);
+  const handelremoveuser = async (removeEmail: string) => {
+    // filter out the email we want to remove
+    const updatedEmails = email.filter((e) => e !== removeEmail);
 
-  // update backend
-  const success = await updatefileusers({
-    fileId: file.$id,
-    emails: updatedEmails,
-    path,
-  });
+    // update backend
+    const success = await updatefileusers({
+      fileId: file.$id,
+      emails: updatedEmails,
+      path,
+    });
 
-  if (success) {
-    setemail(updatedEmails); // update local state
-    closeallmodels(); // close modal
-  }
-};
-  ;
+    if (success) {
+      setemail(updatedEmails); // update local state
+      closeallmodels(); // close modal
+    }
+  };
   const renderdialogcontent = () => {
     if (!action) return null;
     const { value, label } = action;
@@ -120,9 +120,7 @@ const handelremoveuser = async (removeEmail: string) => {
             <>
               <p className="delete-confirmation">
                 Are you sure?{` `}
-                <span className="delete-file-name">
-                  {file.name}
-                </span>
+                <span className="delete-file-name">{file.name}</span>
               </p>
             </>
           )}
