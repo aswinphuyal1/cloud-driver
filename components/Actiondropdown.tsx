@@ -28,7 +28,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { renamefile } from "@/lib/actions/file.actions";
 import { usePathname } from "next/navigation";
-
+import { FileDetails } from "./actionsmodelcontent";
 type ActionType = {
   value: string;
   label: string;
@@ -40,7 +40,7 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
   const [action, setaction] = useState<ActionType | null>(null);
   const [name, setname] = useState(file.name);
   const [isloading, setisloading] = useState(false);
-  const path =usePathname()
+  const path = usePathname();
   const closeallmodels = () => {
     setismodelopen(false);
     setisdropdownopen(false);
@@ -59,13 +59,12 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
       share: () => {},
       delete: () => {},
     };
-    //This line dynamically calls a function from the actions object 
+    //This line dynamically calls a function from the actions object
     // based on the key in action.value and waits for the result, then assigns that result to success.
     success = await actions[action.value as keyof typeof actions]();
     if (success) closeallmodels();
     setisloading(false);
   };
-
 
   const renderdialogcontent = () => {
     if (!action) return null;
@@ -83,10 +82,14 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
               onChange={(e) => setname(e.target.value)}
             />
           )}
+
+          {value === "details" && <FileDetails file={file} />}
         </DialogHeader>
         {["rename", "delete", "share"].includes(value) && (
           <DialogFooter className="flex flex-col gap-3">
-            <Button onClick={closeallmodels} className="modal-cancel-button">Cancle</Button>
+            <Button onClick={closeallmodels} className="modal-cancel-button">
+              Cancle
+            </Button>
             <Button onClick={handelaction} className="modal-submit-button">
               <p className="capitalize">{value}</p>
               {isloading && (
@@ -166,7 +169,5 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
     </Dialog>
   );
 };
-
-
 
 export default Actiondropdown;
