@@ -26,6 +26,8 @@ import { constructDownloadUrl } from "@/lib/utils";
 import { Label } from "recharts";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { renamefile } from "@/lib/actions/file.actions";
+import { usePathname } from "next/navigation";
 
 type ActionType = {
   value: string;
@@ -38,6 +40,7 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
   const [action, setaction] = useState<ActionType | null>(null);
   const [name, setname] = useState(file.name);
   const [isloading, setisloading] = useState(false);
+  const path =usePathname()
   const closeallmodels = () => {
     setismodelopen(false);
     setisdropdownopen(false);
@@ -46,7 +49,23 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
     //setemail([])
   };
 
-  const handelaction = async () => {};
+  const handelaction = async () => {
+    if (!action) return;
+    setisloading(true);
+    let success = false;
+    const actions = {
+      rename: () =>
+        renamefile({ fileId: file.$id, name, extension: file.extension, path }),
+      share: () => {},
+      delete: () => {},
+    };
+    //This line dynamically calls a function from the actions object 
+    // based on the key in action.value and waits for the result, then assigns that result to success.
+    success = await actions[action.value as keyof typeof actions]();
+    if (success) closeallmodels();
+    setisloading(false);
+  };
+
 
   const renderdialogcontent = () => {
     if (!action) return null;
@@ -147,5 +166,7 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
     </Dialog>
   );
 };
+
+
 
 export default Actiondropdown;
