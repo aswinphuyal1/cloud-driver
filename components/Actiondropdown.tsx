@@ -116,6 +116,16 @@ const handelremoveuser = async (removeEmail: string) => {
               onremove={handelremoveuser}
             />
           )}
+          {value === "delete" && (
+            <>
+              <p className="delete-confirmation">
+                Are you sure?{` `}
+                <span className="delete-file-name">
+                  {file.name}
+                </span>
+              </p>
+            </>
+          )}
 
           {value === "details" && <FileDetails file={file} />}
         </DialogHeader>
