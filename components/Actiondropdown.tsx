@@ -125,6 +125,7 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
             </>
           )}
 
+
           {value === "details" && <FileDetails file={file} />}
         </DialogHeader>
         {["rename", "delete", "share"].includes(value) && (
