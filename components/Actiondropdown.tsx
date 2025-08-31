@@ -74,13 +74,7 @@ const Actiondropdown = ({ file }: { file: Models.Document }) => {
     if (success) closeallmodels();
     setisloading(false);
   };
-//   const handelremoveuser = () => async(email:string)=>
-//   {
-// const updateemails=email.filter((e)=> e !==email)
-// const success =await updatefileusers({fileId:file.$id,emails:updateemails,path})
-// if(success) setemail(updateemails) 
-//   closeallmodels()
-// }
+
 const handelremoveuser = async (removeEmail: string) => {
   // filter out the email we want to remove
   const updatedEmails = email.filter((e) => e !== removeEmail);
@@ -97,18 +91,6 @@ const handelremoveuser = async (removeEmail: string) => {
     closeallmodels(); // close modal
   }
 };
-
-
-
-
-
-// const handelremoveuser = () => async (emailToRemove: string) => {
-//   const updatedEmails = file.users.filter(
-//     (email: string) => email !== emailToRemove
-//   );
-//   await updatefileusers({ fileId: file.$id, emails: updatedEmails, path });
-// };
-
   ;
   const renderdialogcontent = () => {
     if (!action) return null;
