@@ -1,11 +1,13 @@
 import Cart from "@/components/Cart";
 import Sort from "@/components/Sort";
 import { getfiles } from "@/lib/actions/file.actions";
+import { getFileTypesParams } from "@/lib/utils";
 import React from "react";
 
 const page = async ({ params }: SearchParamProps) => {
   const type = ((await params)?.type as string) || "";
-  const files = await getfiles();
+  const types= getFileTypesParams(type) as FileType[]
+  const files = await getfiles({types}:{types:types});
   return (
     <div className="page-container">
       <section className="w-full">
@@ -24,6 +26,7 @@ const page = async ({ params }: SearchParamProps) => {
       {files && files.total > 0 && files.documents ? (
         <section className="file-list">
           {files.documents.map((file: any) => (
+            
             
               <Cart key={file.$id} file={file}/>
             

@@ -2,12 +2,10 @@
 import { InputFile } from "node-appwrite/file";
 import { createadminclient } from "../appwrite";
 import { appwriteconfig } from "../appwrite/config";
-import { ID, Models, Query } from "node-appwrite";
+import { ID, Models, Query } from "node-appwrite"; 
 import { constructFileUrl, getFileType, parseStringify } from "../utils";
-import { use } from "react";
 import { revalidatePath } from "next/cache";
 import { getcurrentuser } from "./user.actions";
-import { create } from "domain";
 const handleError = (error: unknown, message: string) => {
   console.error(message, error);
   throw new Error(message);
@@ -63,22 +61,24 @@ export const uploadfile = async ({
   }
 };
 
-const createqueries = (currentusser: Models.Document) => {
+const createqueries = (currentusser: Models.Document,types:string[]) => {
   const queries = [
     Query.or([
       Query.equal("owner", [currentusser.$id]),
       Query.contains("users", [currentusser.email]),
     ]),
   ];
+if(types.length>0) queries.push(Query.equal('type',types))
+
   return queries;
 };
-export const getfiles = async () => {
+export const getfiles = async ({types=[]}:GetFilesProps) => {
   const { databases } = await createadminclient();
   try {
     //we only nedd to show the currne user files
     const currentusser = await getcurrentuser();
     if (!currentusser) throw new Error("user not found");
-    const queries = createqueries(currentusser);
+    const queries = createqueries(currentusser,types);
     //  console.log({currentusser,queries})
     const files = await databases.listDocuments(
       appwriteconfig.databaseid,
@@ -112,7 +112,7 @@ export const renamefile = async ({
     revalidatePath(path);
     return parseStringify(updatefile);
   } catch (error) {
-    handleError(error, "failed to rename");
+    handleError(error, "failed to update file users");
   }
 };
 
@@ -158,6 +158,6 @@ export const deletefile = async ({
     revalidatePath(path);
     return parseStringify('success');
   } catch (error) {
-    handleError(error, "failed to rename");
+    handleError(error, "failed to delete file");
   }
 };
