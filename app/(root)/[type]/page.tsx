@@ -7,7 +7,7 @@ import React from "react";
 const page = async ({ params }: SearchParamProps) => {
   const type = ((await params)?.type as string) || "";
   const types= getFileTypesParams(type) as FileType[]
-  const files = await getfiles({types}:{types:types});
+  const files = await getfiles({types:types});
   return (
     <div className="page-container">
       <section className="w-full">
