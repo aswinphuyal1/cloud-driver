@@ -78,12 +78,12 @@ const createqueries = (
   if (types.length > 0) queries.push(Query.equal("type", types));
   if (searchText) queries.push(Query.contains("name", searchText));
   if (limit) queries.push(Query.limit(limit));
-  if(sort){
-  const [sortBy, orderBy] = sort.split("-");
-  queries.push(
-    orderBy == "asc" ? Query.orderAsc(sortBy) : Query.orderDesc(sortBy)
-  );
-}
+  if (sort) {
+    const [sortBy, orderBy] = sort.split("-");
+    queries.push(
+      orderBy == "asc" ? Query.orderAsc(sortBy) : Query.orderDesc(sortBy)
+    );
+  }
   return queries;
 };
 export const getfiles = async ({
@@ -179,3 +179,44 @@ export const deletefile = async ({
     handleError(error, "failed to delete file");
   }
 };
+
+export async function getTotalSpaceUsed() {
+  try {
+    const { databases } = await createadminclient();
+    const currentUser = await getcurrentuser();
+    if (!currentUser) throw new Error("User is not authenticated.");
+
+    const files = await databases.listDocuments(
+      appwriteconfig.databaseid,
+      appwriteconfig.filescollectionid,
+      [Query.equal("owner", [currentUser.$id])]
+    );
+
+    const totalSpace = {
+      image: { size: 0, latestDate: "" },
+      document: { size: 0, latestDate: "" },
+      video: { size: 0, latestDate: "" },
+      audio: { size: 0, latestDate: "" },
+      other: { size: 0, latestDate: "" },
+      used: 0,
+      all: 2 * 1024 * 1024 * 1024 /* 2GB available bucket storage */,
+    };
+
+    files.documents.forEach((file) => {
+      const fileType = file.type as FileType;
+      totalSpace[fileType].size += file.size;
+      totalSpace.used += file.size;
+
+      if (
+        !totalSpace[fileType].latestDate ||
+        new Date(file.$updatedAt) > new Date(totalSpace[fileType].latestDate)
+      ) {
+        totalSpace[fileType].latestDate = file.$updatedAt;
+      }
+    });
+
+    return parseStringify(totalSpace);
+  } catch (error) {
+    handleError(error, "Error calculating total space used:, ");
+  }
+}
