@@ -4,10 +4,12 @@ import { getfiles } from "@/lib/actions/file.actions";
 import { getFileTypesParams } from "@/lib/utils";
 import React from "react";
 
-const page = async ({ params }: SearchParamProps) => {
+const page = async ({ searchParams,params }: SearchParamProps) => {
   const type = ((await params)?.type as string) || "";
+  const searchText = ((await searchParams)?.query as string) || "";
+    const sort=((await searchParams)?.query) as string ||"";
   const types= getFileTypesParams(type) as FileType[]
-  const files = await getfiles({types:types});
+  const files = await getfiles({ types: types, searchText, sort });
   return (
     <div className="page-container">
       <section className="w-full">

@@ -2,10 +2,11 @@
 import { InputFile } from "node-appwrite/file";
 import { createadminclient } from "../appwrite";
 import { appwriteconfig } from "../appwrite/config";
-import { ID, Models, Query } from "node-appwrite"; 
+import { ID, Models, Query } from "node-appwrite";
 import { constructFileUrl, getFileType, parseStringify } from "../utils";
 import { revalidatePath } from "next/cache";
 import { getcurrentuser } from "./user.actions";
+import { Separator } from "@radix-ui/react-select";
 const handleError = (error: unknown, message: string) => {
   console.error(message, error);
   throw new Error(message);
@@ -61,24 +62,40 @@ export const uploadfile = async ({
   }
 };
 
-const createqueries = (currentusser: Models.Document,types:string[]) => {
+const createqueries = (
+  currentusser: Models.Document,
+  types: string[],
+  searchText: string,
+  sort: string,
+  limit?: number
+) => {
   const queries = [
     Query.or([
       Query.equal("owner", [currentusser.$id]),
       Query.contains("users", [currentusser.email]),
     ]),
   ];
-if(types.length>0) queries.push(Query.equal('type',types))
-
+  if (types.length > 0) queries.push(Query.equal("type", types));
+  if (searchText) queries.push(Query.contains("name", searchText));
+  if (limit) queries.push(Query.limit(limit));
+  const [sortBy, orderBy] = sort.split("-");
+  queries.push(
+    orderBy == "asc" ? Query.orderAsc(sortBy) : Query.orderDesc(sortBy)
+  );
   return queries;
 };
-export const getfiles = async ({types=[]}:GetFilesProps) => {
+export const getfiles = async ({
+  types = [],
+  searchText = "",
+  sort = "$createdAt-desc",
+  limit,
+}: GetFilesProps) => {
   const { databases } = await createadminclient();
   try {
     //we only nedd to show the currne user files
     const currentusser = await getcurrentuser();
     if (!currentusser) throw new Error("user not found");
-    const queries = createqueries(currentusser,types);
+    const queries = createqueries(currentusser, types, searchText, sort, limit);
     //  console.log({currentusser,queries})
     const files = await databases.listDocuments(
       appwriteconfig.databaseid,
@@ -144,19 +161,18 @@ export const deletefile = async ({
   bucketFileId,
   path,
 }: DeleteFileProps) => {
-  const { databases,storage } = await createadminclient();
+  const { databases, storage } = await createadminclient();
   try {
     const deletedfile = await databases.deleteDocument(
       appwriteconfig.databaseid,
       appwriteconfig.filescollectionid,
-      fileId,
-    
+      fileId
     );
-    if(deletedfile) 
-      await storage.deleteFile(appwriteconfig.bucketid,bucketFileId)
+    if (deletedfile)
+      await storage.deleteFile(appwriteconfig.bucketid, bucketFileId);
     // Optionally revalidate path if needed
     revalidatePath(path);
-    return parseStringify('success');
+    return parseStringify("success");
   } catch (error) {
     handleError(error, "failed to delete file");
   }
