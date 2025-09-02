@@ -39,7 +39,9 @@ const router=useRouter();
     setopen(false)
     setresult([])
 
-    router.push(`/${file.type==='video'?'media':file.type+'s'}?query=${query}`)
+    router.push(
+      `/${(file.type === "video" || file.type === "audio" )? "media" : file.type + "s"}?query=${query}`
+    );
   }
   return (
     <div className="search">
