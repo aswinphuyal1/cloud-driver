@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import { Input } from "./ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getfiles } from "@/lib/actions/file.actions";
 import { Models } from "node-appwrite";
 import Thumbnail from "./Thumbnail";
 import Formatteddatetime from "./Formatteddatetime";
-import { Module } from "module";
+
 
 const Search = () => {
   const [query, setquery] = useState("");
@@ -18,8 +18,16 @@ const Search = () => {
   const [result, setresult] = useState<Models.Document[]>([]);
   const [open, setopen] = useState(false);
 const router=useRouter();
+const path=usePathname()
   useEffect(() => {
     const fetchfiles = async () => {
+      if(!query)
+      {
+        setresult([])
+        setopen(false)
+        return router.push(path.replace(searchParams.toString(),''));
+
+      }
      const files = await getfiles({ types: [], searchText: query});
       setresult(files.documents);
       setopen(true);
