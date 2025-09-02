@@ -4,11 +4,11 @@ import { getfiles } from "@/lib/actions/file.actions";
 import { getFileTypesParams } from "@/lib/utils";
 import React from "react";
 
-const page = async ({ searchParams,params }: SearchParamProps) => {
+const page = async ({ searchParams, params }: SearchParamProps) => {
   const type = ((await params)?.type as string) || "";
   const searchText = ((await searchParams)?.query as string) || "";
-    const sort=((await searchParams)?.sort) as string ||"";
-  const types= getFileTypesParams(type) as FileType[]
+  const sort = ((await searchParams)?.sort as string) || "";
+  const types = getFileTypesParams(type) as FileType[];
   const files = await getfiles({ types: types, searchText, sort });
   return (
     <div className="page-container">
@@ -28,10 +28,7 @@ const page = async ({ searchParams,params }: SearchParamProps) => {
       {files && files.total > 0 && files.documents ? (
         <section className="file-list">
           {files.documents.map((file: any) => (
-            
-            
-              <Cart key={file.$id} file={file}/>
-            
+            <Cart key={file.$id} file={file} />
           ))}
         </section>
       ) : (
