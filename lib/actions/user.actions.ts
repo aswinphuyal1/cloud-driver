@@ -107,15 +107,19 @@ export const verifysecret = async ({
 };
 
 export const getcurrentuser = async () => {
-  const { databases, account } = await createsessionclient();
-  const result = await account.get();
-  const user = await databases.listDocuments(
-    appwriteconfig.databaseid,
-    appwriteconfig.usercollectionid,
-    [Query.equal("accountid", [result.$id])]
-  );
-  if (user.total <= 0) return null;
-  return parseStringify(user.documents[0]);
+  try {
+    const { databases, account } = await createsessionclient();
+    const result = await account.get();
+    const user = await databases.listDocuments(
+      appwriteconfig.databaseid,
+      appwriteconfig.usercollectionid,
+      [Query.equal("accountid", [result.$id])]
+    );
+    if (user.total <= 0) return null;
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const Signoutuser = async () => {
