@@ -30,6 +30,7 @@ const Search = () => {
       setresult(files.documents);
       setopen(true);
     };
+    
     fetchfiles();
   }, [debouncequery]);
   useEffect(() => {
