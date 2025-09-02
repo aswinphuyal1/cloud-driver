@@ -6,6 +6,9 @@ import { Input } from "./ui/input";
 import { useSearchParams } from "next/navigation";
 import { getfiles } from "@/lib/actions/file.actions";
 import { Models } from "node-appwrite";
+import Thumbnail from "./Thumbnail";
+import Formatteddatetime from "./Formatteddatetime";
+
 const Search = () => {
   const [query, setquery] = useState("");
   const searchParams = useSearchParams();
@@ -16,12 +19,13 @@ const Search = () => {
 
   useEffect(() => {
     const fetchfiles = async () => {
-      const files = await getfiles({ types,searchText:query,sort,limit});
+
+     const files = await getfiles({ types: [], searchText: query});
       setresult(files.documents);
       setopen(true);
     };
     fetchfiles();
-  }, []);
+  }, [query]);
   useEffect(() => {
     if (!searchquery) {
       setquery("");
@@ -47,7 +51,27 @@ const Search = () => {
           <ul className="search-result">
             {result.length > 0 ? (
               result.map((file) => (
-                <li key={file.$id}>{file.name || "Unnamed File"}</li>
+                <li
+                  className="flex items-center justify-between"
+                  key={file.$id}
+                >
+                  <div className="flex cursor-pointer items-center gap-4 min-w-0">
+                    <Thumbnail
+                      name={file.name}
+                      type={file.type}
+                      extension={file.extension}
+                      url={file.url}
+                      className="size-9 min-w-9"
+                    />
+                    <p className="subtitle-2 line-clamp-1 text-light-100">
+                      {file.name || "Unnamed File"}
+                    </p>
+                  </div>
+                  <Formatteddatetime
+                    date={file.$createdAt}
+                    className="caption line-clamp-1 text-light-200"
+                  />
+                </li>
               ))
             ) : (
               <li className="empty-result">No result</li>
