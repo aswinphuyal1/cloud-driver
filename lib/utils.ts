@@ -249,6 +249,7 @@ export const getFileTypesParams = (type: string) => {
       return ["document"];
   }
 };
+
 // import { clsx, type ClassValue } from "clsx";
 // import { twMerge } from "tailwind-merge";
 
