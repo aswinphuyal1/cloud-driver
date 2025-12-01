@@ -19,6 +19,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
         <div className="main-content">{children}</div>
       </section>
       <Toaster/>
+      
     </main>
   );
 };
