@@ -29,32 +29,32 @@ Cloud Driver is a high-performance, full-stack cloud storage platform built with
       <td width="50%"><img src="./images/Screenshot 2026-01-05 191711.png" alt="Files" /></td>
     </tr>
     <tr>
-      <td align="center"><b>Dashboard Overview</b></td>
-      <td align="center"><b>File Explorer</b></td>
+      <td align="center"><b>Sign-IN</b></td>
+      <td align="center"><b>Sign-Up</b></td>
     </tr>
     <tr>
       <td width="50%"><img src="./images/Screenshot 2026-01-05 192221.png" alt="Media" /></td>
       <td width="50%"><img src="./images/Screenshot 2026-01-05 192348.png" alt="Upload" /></td>
     </tr>
     <tr>
-      <td align="center"><b>Media Categorization</b></td>
-      <td align="center"><b>File Upload System</b></td>
+      <td align="center"><b>OTP</b></td>
+      <td align="center"><b>Dashboard Overview</b></td>
     </tr>
     <tr>
       <td width="50%"><img src="./images/Screenshot 2026-01-05 192409.png" alt="Auth" /></td>
       <td width="50%"><img src="./images/Screenshot 2026-01-05 192419.png" alt="Details" /></td>
     </tr>
     <tr>
-      <td align="center"><b>Secure Authentication</b></td>
-      <td align="center"><b>File Details View</b></td>
+      <td align="center"><b>Documents page</b></td>
+      <td align="center"><b>Images page</b></td>
     </tr>
     <tr>
       <td width="50%"><img src="./images/Screenshot 2026-01-05 192430.png" alt="Search" /></td>
       <td width="50%"><img src="./images/Screenshot 2026-01-05 192447.png" alt="Profile" /></td>
     </tr>
     <tr>
-      <td align="center"><b>Global Search</b></td>
-      <td align="center"><b>User Profile</b></td>
+      <td align="center"><b>Media page</b></td>
+      <td align="center"><b>Others page</b></td>
     </tr>
   </table>
 </div>
