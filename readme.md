@@ -2,6 +2,26 @@
 
 Cloud Driver is a full-stack cloud storage application built with Next.js and Appwrite. It provides a modern, user-friendly interface for uploading, managing, and sharing files, similar to services like Google Drive or Dropbox.
 
+## UI Showcase
+
+### User Views
+| Dashboard | File Management |
+|---:|:---|
+| ![Dashboard](./images/Screenshot%202026-01-05%20191657.png) | ![Files](./images/Screenshot%202026-01-05%20191711.png) |
+
+| Media / Images | File Upload |
+|---:|:---|
+| ![Media](./images/Screenshot%202026-01-05%20192221.png) | ![Upload](./images/Screenshot%202026-01-05%20192348.png) |
+
+| Authentication | File Details |
+|---:|:---|
+| ![Auth](./images/Screenshot%202026-01-05%20192409.png) | ![Details](./images/Screenshot%202026-01-05%20192419.png) |
+
+| Global Search | User Profile |
+|---:|:---|
+| ![Search](./images/Screenshot%202026-01-05%20192430.png) | ![Profile](./images/Screenshot%202026-01-05%20192447.png) |
+
+
 ## Features
 
 *   **Authentication**: Secure user sign-up and sign-in with email and OTP verification.
@@ -79,22 +99,8 @@ cd cloud-driver
 npm install
 ```
 
-### 3. Set up environment variables
 
-Create a `.env.local` file in the root of your project and add the following variables from your Appwrite project console:
-
-```env
-# Appwrite Configuration
-NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-NEXT_PUBLIC_APPWRITE_PROJECT_ID=YOUR_PROJECT_ID
-NEXT_PUBLIC_APPWRITE_DATABASE=YOUR_DATABASE_ID
-NEXT_PUBLIC_APPWRITE_USERS_COLLECTION=YOUR_USERS_COLLECTION_ID
-NEXT_PUBLIC_APPWRITE_FILES_COLLECTION=YOUR_FILES_COLLECTION_ID
-NEXT_PUBLIC_APPWRITE_BUCKET=YOUR_BUCKET_ID
-NEXT_APPWRITE_KEY=YOUR_APPWRITE_API_KEY
-```
-
-### 4. Run the development server
+### 3. Run the development server
 
 ```bash
 npm run dev
