@@ -5,19 +5,19 @@ Cloud Driver is a full-stack cloud storage application built with Next.js and Ap
 ## UI Showcase
 
 ### User Views
-| Dashboard | File Management |
+
 |---:|:---|
 | ![Dashboard](./images/Screenshot%202026-01-05%20191657.png) | ![Files](./images/Screenshot%202026-01-05%20191711.png) |
 
-| Media / Images | File Upload |
+
 |---:|:---|
 | ![Media](./images/Screenshot%202026-01-05%20192221.png) | ![Upload](./images/Screenshot%202026-01-05%20192348.png) |
 
-| Authentication | File Details |
+
 |---:|:---|
 | ![Auth](./images/Screenshot%202026-01-05%20192409.png) | ![Details](./images/Screenshot%202026-01-05%20192419.png) |
 
-| Global Search | User Profile |
+
 |---:|:---|
 | ![Search](./images/Screenshot%202026-01-05%20192430.png) | ![Profile](./images/Screenshot%202026-01-05%20192447.png) |
 
